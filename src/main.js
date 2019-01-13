@@ -2,6 +2,11 @@
 document.write('<script type="text/javascript" src="src/object/fridge.js"></script>');
 document.write('<script type="text/javascript" src="lib/three.js-master/examples/js/loaders/FBXLoader_r90.js"></script>');
 document.write('<script type="text/javascript" src="lib/three.js-master/examples/js/libs/inflate.min.js"></script>');
+document.write('<script type="text/javascript" src="/src/events/executeRaycast.js"></script>');
+document.write('<script type="text/javascript" src="/src/events/calculateMousePosition.js"></script>');
+document.write('<script type="text/javascript" src="/lib/ThreeCSG-master_oldVersion/ThreeCSG.js"></script>');
+document.write('<script type="text/javascript" src="/src/Animations/Animation.js"></script>');
+
 function main() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xcce0ff );
@@ -77,14 +82,19 @@ function main() {
     renderer.setClearColor(new THREE.Color(0xffffff));//background color
     document.getElementById("3d_content").appendChild(renderer.domElement);
 
-    function mainLoop() {
+    var clock = new THREE.Clock();
 
+    function mainLoop() {
+        var delta=clock.getDelta();
+        fridgeAnimation.update(delta);
         renderer.render(scene, camera);
         requestAnimationFrame(mainLoop);
         
     }
 
     mainLoop();
+    window.onmousemove = calculateMousePosition;   
+    window.onclick = executeRaycast;
 }
 
 window.onload = main;
