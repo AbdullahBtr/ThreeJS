@@ -11,7 +11,9 @@ function executeRaycast(event) {
         var firstHit = intersects[0].object;
 
         if (firstHit.name === "Cube_2") {
-            firstHit.userData.toggleAnimationEndPosition();            
+            console.log(fridge.userData);
+            firstHit.userData.toggleAnimationEndPosition();    
+                    
         } 
     }
 }

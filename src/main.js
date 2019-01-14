@@ -6,6 +6,11 @@ document.write('<script type="text/javascript" src="/src/events/executeRaycast.j
 document.write('<script type="text/javascript" src="/src/events/calculateMousePosition.js"></script>');
 document.write('<script type="text/javascript" src="/lib/ThreeCSG-master_oldVersion/ThreeCSG.js"></script>');
 document.write('<script type="text/javascript" src="/src/Animations/Animation.js"></script>');
+document.write('<script type="text/javascript" src="/src/events//updateAspectRatio.js"></script>');
+document.write('<script type="text/javascript" src="/lib/cannon.js-master/build/cannon.js"></script>');
+document.write('<script type="text/javascript" src="/src/physics/Physics.js"></script>');
+document.write('<script type="text/javascript" src="/src/events/executeKeyAction.js"></script>');
+
 
 function main() {
     scene = new THREE.Scene();
@@ -13,7 +18,8 @@ function main() {
     scene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
  
 
-
+    physics = new Physics();
+    physics.initialize(0, -200, 0, 1/120, true);
 
     // lights
     scene.add( new THREE.AmbientLight( 0x666666 ) );
@@ -55,9 +61,7 @@ function main() {
     gui.add(sphere.position, "x", -50, 1000).step(5);
     gui.add(sphere.position, "y", -150, 50).step(5);
     gui.add(sphere.position, "z", -50, 800).step(5);
-    gui.add(fridge.rotation,"x",-100,200).step(10);
-    gui.add(fridge.rotation,"y",-100,200).step(10);
-    gui.add(fridge.rotation,"z",-100,200).step(10);
+
     
 
     camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 10000 );
@@ -86,6 +90,7 @@ function main() {
 
     function mainLoop() {
         var delta=clock.getDelta();
+        physics.update(delta);
         fridgeAnimation.update(delta);
         renderer.render(scene, camera);
         requestAnimationFrame(mainLoop);
@@ -93,8 +98,11 @@ function main() {
     }
 
     mainLoop();
-    window.onmousemove = calculateMousePosition;   
+    window.onresize = updateAspectRatio;
+    window.onmousemove = calculateMousePosition;
     window.onclick = executeRaycast;
+    window.onkeydown = keyDownAction;
+    window.onkeyup = keyUpAction;
 }
 
 window.onload = main;
