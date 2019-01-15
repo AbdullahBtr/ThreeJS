@@ -2,7 +2,8 @@ function addRadioFromFile() {
 
     fridge = new THREE.Group();
 
-    var fbxloader = new THREE.FBXLoader();
+    var loadingManager= new THREE.LoadingManager();
+    var fbxloader = new THREE.FBXLoader(loadingManager);
 
     animationMixer = null;
 
@@ -24,6 +25,19 @@ function addRadioFromFile() {
     fridge.scale.set(0.1,0.1,0.1);
     fridge.position.set(10, 60, 0 );
     
+
+//tür animieren
+cubeAnimation=null;
+loadingManager.onLoad=function(){
+    fridge.traverse(function(child){
+        if(child.name==="Cube_2" ||child.name==="Cube"){
+            cubeAnimation=new Animation(child,AnimationType.ROTATION,AnimationAxis.Y);
+            cubeAnimation.setAmount(30 * Math.PI / 180);
+            cubeAnimation.setSpeed(40 * Math.PI / 180);
+            child.userData=cubeAnimation;
+        }
+    });
+}
 
     scene.add(fridge);
 

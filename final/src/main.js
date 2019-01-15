@@ -16,10 +16,11 @@ document.write('<script type="text/javascript" src="src/eventfunctions/updateAsp
 document.write('<script type="text/javascript" src="src/eventfunctions/calculateMousePosition.js"></script>');
 document.write('<script type="text/javascript" src="src/eventfunctions/executeRaycast.js"></script>');
 document.write('<script type="text/javascript" src="src/eventfunctions/executeKeyAction.js"></script>');
-document.write('<script type="text/javascript" src="src/eventfunctions/setRadioSound.js"></script>');
+document.write('<script type="text/javascript" src="src/eventfunctions/setSound.js"></script>');
 document.write('<script type="text/javascript" src="src/animation/Animation.js"></script>');
 document.write('<script type="text/javascript" src="src/physics/Physics.js"></script>');
 document.write('<script type="text/javascript" src="src/objects/addLights.js"></script>');
+document.write('<script type="text/javascript" src="src/audiofiles/gate.mp3"></script>');
 
 const DEG_TO_RAD = Math.PI / 180;
 
@@ -60,10 +61,25 @@ function main() {
     mesh.receiveShadow = true;
     scene.add(mesh);
 
+//Sound
+setSound();
+//     var listener = new THREE.AudioListener();
+    
+//     sound = new THREE.Audio( listener );
+
+// // load a sound and set it as the Audio object's buffer
+//     audioLoader = new THREE.AudioLoader();
+//     audioLoader.load( 'src/audiofiles/gate.mp3', function( buffer ) {
+// 	sound.setBuffer( buffer );
+// 	sound.setLoop( true );
+//     sound.setVolume( 0.5 );
+//     sound.startTime=10;
+// 	sound.play();
+// });
     camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,1000);
     camera.position.set(0, 150, 350);
     camera.lookAt(0, 83, 0);
-
+    camera.add( listener );
     var orbitControls = new THREE.OrbitControls(camera);
     orbitControls.target = new THREE.Vector3(0,83,0);
     orbitControls.update();
@@ -90,6 +106,10 @@ function main() {
 
         physics.update(delta);
 
+        if(cubeAnimation!=null){
+            cubeAnimation.update(delta)
+        }
+
         renderer.render(scene, camera);
 
         stats.end();
@@ -104,7 +124,6 @@ function main() {
     window.onclick = executeRaycast;
     window.onkeydown = keyDownAction;
     window.onkeyup = keyUpAction;
-
 }
 
 window.onload = main;
