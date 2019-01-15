@@ -6,7 +6,7 @@ function setSound(){
 
 // load a sound and set it as the Audio object's buffer
  audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'src/audiofiles/gate.mp3', function( buffer ) {
+ audioLoader.load( 'src/audiofiles/gate.mp3', function( buffer ) {
 	sound.setBuffer( buffer );
 	sound.setLoop( true );
 	sound.setVolume( 0.5 );

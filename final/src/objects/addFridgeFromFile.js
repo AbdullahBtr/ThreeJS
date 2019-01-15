@@ -1,11 +1,10 @@
-function addRadioFromFile() {
+function addFridgeFromFile() {
 
     fridge = new THREE.Group();
 
     var loadingManager= new THREE.LoadingManager();
     var fbxloader = new THREE.FBXLoader(loadingManager);
 
-    animationMixer = null;
 
     fbxloader.load('src/models/ref.fbx', function(object) {
         fridge.add(object);
@@ -30,7 +29,8 @@ function addRadioFromFile() {
 cubeAnimation=null;
 loadingManager.onLoad=function(){
     fridge.traverse(function(child){
-        if(child.name==="Cube_2" ||child.name==="Cube"){
+        console.log(child.name);
+        if(child.name==="Cube_2"){
             cubeAnimation=new Animation(child,AnimationType.ROTATION,AnimationAxis.Y);
             cubeAnimation.setAmount(30 * Math.PI / 180);
             cubeAnimation.setSpeed(40 * Math.PI / 180);

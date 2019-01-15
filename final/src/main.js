@@ -33,12 +33,11 @@ function main() {
     physics = new Physics();
     physics.initialize(0, -200, 0, 1/120, true);
 
-    var axes = new THREE.AxesHelper(20);
-    //scene.add(axes);
 
-    addRadioFromFile();
 
-    var texture = new THREE.TextureLoader().load( '/src/crate.png' );            
+    addFridgeFromFile();
+
+    var texture = new THREE.TextureLoader().load( 'src/crate.png' );            
     var geometry = new THREE.BoxBufferGeometry( 150, 100, 50 );
 	var material = new THREE.MeshBasicMaterial( { map: texture } );
     var sphere = new THREE.Mesh( geometry, material );
@@ -49,8 +48,8 @@ function main() {
     // lights
     addLights();
 
-
-    var groundTexture = new THREE.TextureLoader().load( '/src/beispiel.jpg' );
+    //Flur
+    var groundTexture = new THREE.TextureLoader().load( 'src/beispiel.jpg' );
     groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
     groundTexture.repeat.set( 50, 50 );
     groundTexture.anisotropy = 16;
@@ -61,25 +60,15 @@ function main() {
     mesh.receiveShadow = true;
     scene.add(mesh);
 
-//Sound
-setSound();
-//     var listener = new THREE.AudioListener();
-    
-//     sound = new THREE.Audio( listener );
-
-// // load a sound and set it as the Audio object's buffer
-//     audioLoader = new THREE.AudioLoader();
-//     audioLoader.load( 'src/audiofiles/gate.mp3', function( buffer ) {
-// 	sound.setBuffer( buffer );
-// 	sound.setLoop( true );
-//     sound.setVolume( 0.5 );
-//     sound.startTime=10;
-// 	sound.play();
-// });
+    //Sound
+    setSound();
+    //Kamera
     camera = new THREE.PerspectiveCamera(45,window.innerWidth / window.innerHeight,0.1,1000);
     camera.position.set(0, 150, 350);
     camera.lookAt(0, 83, 0);
     camera.add( listener );
+
+
     var orbitControls = new THREE.OrbitControls(camera);
     orbitControls.target = new THREE.Vector3(0,83,0);
     orbitControls.update();
@@ -101,19 +90,13 @@ setSound();
     function mainLoop() {
 
         stats.begin();
-
         var delta = clock.getDelta();
-
         physics.update(delta);
-
         if(cubeAnimation!=null){
             cubeAnimation.update(delta)
         }
-
         renderer.render(scene, camera);
-
         stats.end();
-        
         requestAnimationFrame(mainLoop);
     }
 
